@@ -409,11 +409,23 @@ EXTID2NAME <- function(OrgDb, geneID, keytype) {
     if (! keytype %in% kt) {
         stop("keytype is not supported...")
     }
-
-    gn.df <- suppressMessages(select(OrgDb, keys=geneID, keytype=keytype, columns="SYMBOL"))
-    gn.df <- unique(gn.df)
-    colnames(gn.df) <- c("GeneID", "SYMBOL")
-
+    # modified
+    if ('SGD' %in% columns(OrgDb)) {
+        gn.df <- suppressMessages(select(OrgDb, keys=geneID, keytype=keytype, columns="GENENAME"))
+        gn.df <- unique(gn.df)
+        colnames(gn.df) <- c("GeneID", "SGD", "SYMBOL")
+        gn.df <- gn.df[, c("GeneID", "SYMBOL")]
+        for (i in 1:length(gn.df$SYMBOL)) {
+            if (is.na(gn.df$SYMBOL[i])) {
+                gn.df$SYMBOL[i] <- gn.df$GeneID[i]
+            }
+        }
+    } else {
+        gn.df <- suppressMessages(select(OrgDb, keys=geneID, keytype=keytype, columns="SYMBOL"))
+        gn.df <- unique(gn.df)
+        colnames(gn.df) <- c("GeneID", "SYMBOL")
+    }
+    # modified
     unmap_geneID <- geneID[!geneID %in% gn.df$GeneID]
     if (length(unmap_geneID) != 0) {
         unmap_geneID.df = data.frame(GeneID = unmap_geneID,
