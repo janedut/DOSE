@@ -12,8 +12,10 @@ GSEA_fgsea <- function(geneList,
                        USER_DATA,
                        ...) {
 
-    if(verbose)
+    if(verbose) {
+        message("using 'fgsea' for GSEA analysis, please cite Korotkevich et al (2019).\n")
         message("preparing geneSet collections...")
+    }
 
     geneSets <- getGeneSet(USER_DATA)
     check_gene_id(geneList, geneSets)
