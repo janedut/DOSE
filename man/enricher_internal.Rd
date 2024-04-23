@@ -22,7 +22,8 @@ enricher_internal(
 
 \item{pAdjustMethod}{one of "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"}
 
-\item{universe}{background genes}
+\item{universe}{background genes, default is the intersection of the 'universe' with genes that have annotations. 
+Users can set `options(enrichment_force_universe = TRUE)` to force the 'universe' untouched.}
 
 \item{minGSSize}{minimal size of genes annotated by Ontology term for testing.}
 
@@ -42,6 +43,6 @@ interal method for enrichment analysis
 using the hypergeometric model
 }
 \author{
-Guangchuang Yu \url{http://guangchuangyu.github.io}
+Guangchuang Yu \url{https://yulab-smu.top}
 }
 \keyword{manip}

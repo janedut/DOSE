@@ -5,7 +5,8 @@
 ##' @param gene a vector of entrez gene id.
 ##' @param pvalueCutoff Cutoff value of pvalue.
 ##' @param pAdjustMethod one of "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
-##' @param universe background genes
+##' @param universe background genes, default is the intersection of the 'universe' with genes that have annotations. 
+##' Users can set `options(enrichment_force_universe = TRUE)` to force the 'universe' untouched.
 ##' @param minGSSize minimal size of genes annotated by Ontology term for testing.
 ##' @param maxGSSize maximal size of each geneSet for analyzing
 ##' @param qvalueCutoff cutoff of qvalue
@@ -17,7 +18,7 @@
 ##' @importFrom stats phyper
 ##' @importFrom stats p.adjust
 ##' @keywords manip
-##' @author Guangchuang Yu \url{http://guangchuangyu.github.io}
+##' @author Guangchuang Yu \url{https://yulab-smu.top}
 enricher_internal <- function(gene,
                               pvalueCutoff,
                               pAdjustMethod="BH",
