@@ -1,3 +1,7 @@
+# DOSE 3.30.0
+
++ Bioconductor RELEASE_3_19 (2024-05-15, Wed)
+
 # DOSE 3.29.2
 
 + fix bugs in `get_ont_info()` and `get_dose_data()`: wrong object name and wrong data type (2023-11-30, Thu)
