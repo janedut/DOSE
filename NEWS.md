@@ -1,4 +1,4 @@
-# DOSE 3.30.1
+# DOSE 3.31.1
 
 + fixed bug in `options(enrichment_force_universe=TRUE)` (2024-05-16, Thu)
   - <https://github.com/YuLab-SMU/clusterProfiler/issues/283#issuecomment-2077869230>
