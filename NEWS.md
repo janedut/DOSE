@@ -1,3 +1,8 @@
+# DOSE 3.30.1
+
++ fixed bug in `options(enrichment_force_universe=TRUE)` (2024-05-16, Thu)
+  - <https://github.com/YuLab-SMU/clusterProfiler/issues/283#issuecomment-2077869230>
+
 # DOSE 3.30.0
 
 + Bioconductor RELEASE_3_19 (2024-05-15, Wed)
