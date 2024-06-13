@@ -130,11 +130,17 @@ enricher_internal <- function(gene,
     RichFactor <- k / M
     FoldEnrichment <- RichFactor * N / n 
 
+    # mu and sigma are the mean and standard deviation of the hypergeometric distribution
+    ## https://en.wikipedia.org/wiki/Hypergeometric_distribution
+    mu <- M * n / N
+    sigma <- mu * (N - n) * (N - M) / N / (N-1)
+    zScore <- (k - mu)/sqrt(sigma)
     Over <- data.frame(ID = as.character(qTermID),
                        GeneRatio = GeneRatio,
                        BgRatio = BgRatio,
                        RichFactor = RichFactor,
                        FoldEnrichment = FoldEnrichment,
+                       zScore = zScore, 
                        pvalue = pvalues,
                        stringsAsFactors = FALSE)
 

@@ -1,6 +1,6 @@
-# DOSE 3.31.1.001
+# DOSE 3.31.2
 
-+ add `FoldEnrichment` and `RichFactor` in ORA result (2024-06-13, Thu)
++ add `FoldEnrichment`, `RichFactor` and `zScore` in ORA result (2024-06-13, Thu)
 
 # DOSE 3.31.1
 
