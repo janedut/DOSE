@@ -1,3 +1,7 @@
+# DOSE 3.31.1.001
+
++ add `FoldEnrichment` and `RichFactor` in ORA result (2024-06-13, Thu)
+
 # DOSE 3.31.1
 
 + fixed bug in `options(enrichment_force_universe=TRUE)` (2024-05-16, Thu)

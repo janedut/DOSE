@@ -118,17 +118,23 @@ enricher_internal <- function(gene,
                      )
 
     ## gene ratio and background ratio
-    GeneRatio <- apply(data.frame(a=k, b=n), 1, function(x)
-                       paste(x[1], "/", x[2], sep="", collapse="")
-                       )
-    BgRatio <- apply(data.frame(a=M, b=N), 1, function(x)
-                     paste(x[1], "/", x[2], sep="", collapse="")
-                     )
+    #GeneRatio <- apply(data.frame(a=k, b=n), 1, function(x)
+    #                   paste(x[1], "/", x[2], sep="", collapse="")
+    #                   )
+    #BgRatio <- apply(data.frame(a=M, b=N), 1, function(x)
+    #                 paste(x[1], "/", x[2], sep="", collapse="")
+    #                 )
 
+    GeneRatio <- sprintf("%s/%s", k, n)
+    BgRatio <- sprintf("%s/%s", M, N)
+    RichFactor <- k / M
+    FoldEnrichment <- RichFactor * N / n 
 
     Over <- data.frame(ID = as.character(qTermID),
                        GeneRatio = GeneRatio,
                        BgRatio = BgRatio,
+                       RichFactor = RichFactor,
+                       FoldEnrichment = FoldEnrichment,
                        pvalue = pvalues,
                        stringsAsFactors = FALSE)
 
