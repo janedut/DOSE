@@ -106,7 +106,8 @@ load_onto <- function(onto = "HDO") {
     dbfile <- file.path(dir, sprintf("%s.sqlite", onto))
 
     if (!file.exists(dbfile)) {
-        # download the file
+        url <- 'https://yulab-smu.top/DOSE/HDO.sqlite'
+        utils::download.file(url, destfile=dbfile)
     }
 
     setRefClass("OntDb", contains="AnnotationDb")
