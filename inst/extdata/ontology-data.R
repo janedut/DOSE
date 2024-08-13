@@ -20,7 +20,7 @@ library(AnnotationDbi)
 smartKeys <- getFromNamespace("smartKeys", "AnnotationDbi")
 
 .queryForKeys <- getFromNamespace(".queryForKeys", "AnnotationDbi")
-dbQuery <- getFromNamespace("dbQuery", "AnnotationDbi")
+
 
 
 

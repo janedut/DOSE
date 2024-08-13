@@ -71,9 +71,10 @@ calculate_qvalue <- function(pvals) {
     return(qvalues)
 }
 
-
+#' @importFrom AnnotationDbi toTable
 prepare_relation_df <- function() {
-    hdo_db <- load_onto("HDO")
+    ont <- "HDO"
+    hdo_db <- GOSemSim:::load_onto(ont)
     # gtb <- toTable(HDOTERM)
     gtb <- toTable(hdo_db)
     gtb <- gtb[,1, drop=FALSE]
@@ -81,7 +82,7 @@ prepare_relation_df <- function() {
 
     id <- gtb$id
     #pid <- mget(id, HDOPARENTS)
-    parent <- get_do_parent()
+    parent <- GOSemSim:::getParents(ont)
     pid <- parent[id]
     cid <- rep(names(pid), times=sapply(pid, length))
 
