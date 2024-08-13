@@ -1,3 +1,7 @@
+# DOSE 3.31.2.001
+
++ use `yulab.utils::yulab_msg()` for startup message (2024-07-26, Fri)
+
 # DOSE 3.31.2
 
 + add `FoldEnrichment`, `RichFactor` and `zScore` in ORA result (2024-06-13, Thu)

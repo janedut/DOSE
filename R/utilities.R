@@ -1,3 +1,10 @@
+get_dose_env <- function() {
+    if (!exists(".DOSEEnv")) {
+        .initial()
+    }
+    get(".DOSEEnv")
+}
+
 .initial <- function() {
     pos <- 1
     envir <- as.environment(pos)
@@ -66,12 +73,16 @@ calculate_qvalue <- function(pvals) {
 
 
 prepare_relation_df <- function() {
-    gtb <- toTable(HDOTERM)
+    hdo_db <- load_onto("HDO")
+    # gtb <- toTable(HDOTERM)
+    gtb <- toTable(hdo_db)
     gtb <- gtb[,1, drop=FALSE]
     gtb <- unique(gtb)
 
-    id <- gtb$do_id
-    pid <- mget(id, HDOPARENTS)
+    id <- gtb$id
+    #pid <- mget(id, HDOPARENTS)
+    parent <- get_do_parent()
+    pid <- parent[id]
     cid <- rep(names(pid), times=sapply(pid, length))
 
     ptb <- data.frame(id=cid,
@@ -160,7 +171,8 @@ computeIC <- function(ont="DO"){
             rm(DO2EG, envir = .GlobalEnv)
         }
         DO2EG <- get("DO2EG", envir = DOSEEnv)
-        Offsprings <- AnnotationDbi::as.list(HDO.db::HDOOFFSPRING)
+        # Offsprings <- AnnotationDbi::as.list(HDO.db::HDOOFFSPRING)
+        Offsprings <- get_do_offspring()
     } else if (ont == "MPO") {
         eg.do <- toTable(MPO.db::MPOMPMGI)[, c(2,1)]
         colnames(eg.do) <- c("eg", "doid")
@@ -213,7 +225,8 @@ gene2DO <- function(gene, organism = "hsa", ont = "DO") {
         if (ont == "DO") {
             eg.do <- toTable(MPO.db::MPOMGIDO)
             colnames(eg.do) <- c("eg", "doid")
-            MPOTERMs <- names(as.list(HDOANCESTOR))             
+            # MPOTERMs <- names(as.list(HDOANCESTOR))
+            MPOTERMs <- names(get_do_ancestor())             
         } else {
             eg.do <- toTable(MPO.db::MPOMPMGI)[, c(2,1)]
             colnames(eg.do) <- c("eg", "doid")
@@ -318,8 +331,8 @@ rebuildAnnoData <- function(file) {
     rebuildAnnoData.internal(eg.do)
 }
 
-##' @importFrom HDO.db HDOANCESTOR
-##' @importFrom HDO.db HDOTERM
+## @importFrom HDO.db HDOANCESTOR
+## @importFrom HDO.db HDOTERM
 ##' @importMethodsFrom AnnotationDbi mget
 rebuildAnnoData.internal <- function(eg.do) {
 
@@ -329,7 +342,9 @@ rebuildAnnoData.internal <- function(eg.do) {
     ## DO2EG <- dlply(eg.do, .(doid), .fun=function(i) i$eg)
     # doids <- toTable(HDOTERM)
     # HDOTERMs <- doids$do_id
-    HDOTERMs <- names(as.list(HDOANCESTOR))
+    # HDOTERMs <- names(as.list(HDOANCESTOR))
+    hdoanc <- get_do_ancestor()
+    HDOTERMs <- names(hdoanc)
     idx <- names(DO2EG) %in% HDOTERMs
     DO2EG <- DO2EG[idx]
     DO2EG <- lapply(DO2EG, function(i) unique(i))
@@ -345,7 +360,8 @@ rebuildAnnoData.internal <- function(eg.do) {
 
     EG2ALLDO <- lapply(EG2DO,
                        function(i) {
-                           ans <- unlist(mget(i, HDOANCESTOR))
+                           # ans <- unlist(mget(i, HDOANCESTOR))
+                           ans <- unlist(hdoanc[i])
                            ans <- ans[ !is.na(ans) ]
                            ans <- c(i, ans)
                            ans <- unique(ans)

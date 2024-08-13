@@ -18,9 +18,11 @@ eg.do <- unique(eg.do)
 
 
 
-## update in 2022_7_21
-library(data.table)
-anno <- fread("DISEASE-ALLIANCE_HUMAN.tsv.gz")[, c("DBObjectSymbol", "DOID")]
+# downloaded from https://www.alliancegenome.org/downloads
+# access date: 2024-08-13
+
+pload(data.table)
+anno <- fread("DISEASE-ALLIANCE_HUMAN_6.tsv.gz")[, c("DBObjectSymbol", "DOID")]
 class(anno) <- "data.frame"
 library(clusterProfiler)
 library(org.Hs.eg.db)
@@ -31,7 +33,7 @@ anno[, 1] <- anno_bitr[anno[, 1], 2]
 anno <- anno[!is.na(anno[, 1]), ]
 colnames(anno) <- c("eg", "doid")
 ## add old data
-load("olddata\\DO2EG.rda")
+load("DO2EG.rda")
 anno_old <- stack(DO2EG)
 colnames(anno_old) <- c("eg", "doid")
 anno <- rbind(anno, anno_old)

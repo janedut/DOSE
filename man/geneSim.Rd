@@ -36,5 +36,5 @@ measuring similarities bewteen two gene vectors.
 provide two entrez gene vectors, this function will calculate their similarity.
 }
 \author{
-Guangchuang Yu \url{http://ygc.name}
+Guangchuang Yu \url{https://yulab-smu.top}
 }

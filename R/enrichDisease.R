@@ -56,6 +56,7 @@ enrichDisease <- function(gene,
     return(res)
 }
 
+
 ##' @importFrom yulab.utils check_pkg
 ##' @importFrom yulab.utils get_fun_from_pkg
 ##' @importFrom utils stack
@@ -91,6 +92,9 @@ get_ont_info <- function(ontology) {
             termmap = termmap
         )
 }
+
+
+
 
 get_dose_data <- function(ontology = "HPO") {
     if (!exists(".DOSEenv")) .initial()
