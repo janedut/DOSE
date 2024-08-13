@@ -44,7 +44,6 @@ Learn more at <https://yulab-smu.top/contribution-knowledge-mining/>.
 
 Please cite the following article when using `DOSE`:
 
-__*G Yu*__, LG Wang, GR Yan, QY He. DOSE: an R/Bioconductor package for Disease Ontology Semantic and Enrichment analysis. __*Bioinformatics*__ 2015, 31(4):608-609.
-
-`r badge_doi("10.1093/bioinformatics/btu684", "green")`
-`r badge_altmetric("2788597", "green")`
+```{r comment="", echo=FALSE, results='asis'}
+cat(yulab.utils:::ref_knownledge()["DOSE"], ".\n", sep="")
+```
