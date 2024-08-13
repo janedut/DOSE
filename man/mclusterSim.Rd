@@ -6,7 +6,7 @@
 \usage{
 mclusterSim(
   clusters,
-  ont = "DO",
+  ont = "HDO",
   organism = "hsa",
   measure = "Wang",
   combine = "BMA"
@@ -15,7 +15,7 @@ mclusterSim(
 \arguments{
 \item{clusters}{A list of gene clusters}
 
-\item{ont}{one of "DO" and "MPO"}
+\item{ont}{one of "HDO" and "MPO"}
 
 \item{organism}{organism}
 

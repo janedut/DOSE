@@ -14,15 +14,6 @@ dbconn
 
 
 
-library(AnnotationDbi)
-.keys <- getFromNamespace(".keys", "AnnotationDbi")
-.cols <- getFromNamespace(".cols", "AnnotationDbi")
-smartKeys <- getFromNamespace("smartKeys", "AnnotationDbi")
-
-.queryForKeys <- getFromNamespace(".queryForKeys", "AnnotationDbi")
-
-
-
 
 head(keys(x, 'id'))
 columns(x)
@@ -63,43 +54,5 @@ get_ont_info <- function(ontology) {
         )
 }
 
-
-
-
-
-head(xx)
-
-
-
-columns(x)
-
-xx <- function() {
-x <- dbReadTable(con=dbconn, 'do_offspring')
-#head(x)
-xx <- split(x$offspring, x$doid)
-}
-
-head(xx)
-xx['DOID:0040041']
-
-yy <- function() {
-Offsprings <- AnnotationDbi::as.list(HDO.db::HDOOFFSPRING)
-}
-
-Offsprings['DOID:0040041']
-
-
-microbenchmark::microbenchmark(xx(), yy())
-
-
-
-### create sqlite
-
-library(obolite)
-date <- '20240628'
-name <- "Disease Ontology"
-url <- "https://github.com/DiseaseOntology/HumanDiseaseOntology/blob/main/src/ontology/HumanDO.obo"
-
-create_sqlite("Downloads/HumanDO.obo", "HDO.sqlite", name, date, url)
 
 

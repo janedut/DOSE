@@ -7,7 +7,7 @@
 clusterSim(
   cluster1,
   cluster2,
-  ont = "DO",
+  ont = "HDO",
   organism = "hsa",
   measure = "Wang",
   combine = "BMA"
@@ -18,7 +18,7 @@ clusterSim(
 
 \item{cluster2}{another vector of gene IDs}
 
-\item{ont}{one of "DO" and "MPO"}
+\item{ont}{one of "HDO" and "MPO"}
 
 \item{organism}{organism}
 

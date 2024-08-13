@@ -8,7 +8,6 @@
 \alias{EG2ALLDO}
 \alias{DO2ALLEG}
 \alias{DOIC}
-\alias{dotbl}
 \alias{mpotbl}
 \alias{hpotbl}
 \alias{EG2DOLite}

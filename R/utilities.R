@@ -11,11 +11,6 @@ get_dose_env <- function() {
     assign(".DOSEEnv", new.env(), envir = envir)
     .DOSEEnv <- get(".DOSEEnv", envir = envir)
 
-    tryCatch(utils::data(list="dotbl",
-                         package="DOSE"))
-    dotbl <- get("dotbl")
-    assign("dotbl", dotbl, envir = .DOSEEnv)
-    rm(dotbl, envir = .GlobalEnv)
 
     tryCatch(utils::data(list="mpotbl",
                          package="DOSE"))
@@ -71,17 +66,21 @@ calculate_qvalue <- function(pvals) {
     return(qvalues)
 }
 
+
+
+
+## to be removed, see GOSemSim::get_rel_df
+## 
 #' @importFrom AnnotationDbi toTable
 prepare_relation_df <- function() {
     ont <- "HDO"
-    hdo_db <- GOSemSim:::load_onto(ont)
+    ont_db <- GOSemSim:::load_onto(ont)
     # gtb <- toTable(HDOTERM)
-    gtb <- toTable(hdo_db)
+    gtb <- toTable(ont_db)
     gtb <- gtb[,1, drop=FALSE]
     gtb <- unique(gtb)
 
     id <- gtb$id
-    #pid <- mget(id, HDOPARENTS)
     parent <- GOSemSim:::getParents(ont)
     pid <- parent[id]
     cid <- rep(names(pid), times=sapply(pid, length))
@@ -89,12 +88,15 @@ prepare_relation_df <- function() {
     ptb <- data.frame(id=cid,
                       relationship = 'other',
                       parent = unlist(pid),
-                      Ontology = "DO",
+                      Ontology = ont,
                       stringsAsFactors = FALSE)
 
-    dotbl <- merge(gtb, ptb, by.x="doid", by.y="id")
+    dotbl <- merge(gtb, ptb, by="id")
+    
     save(dotbl, file="dotbl.rda", compress="xz")
     invisible(dotbl)
+
+
     # mpotbl
     gtb <- toTable(MPO.db::MPOTERM)
     gtb <- gtb[,1, drop=FALSE]
@@ -158,13 +160,13 @@ calculate_qvalue <- function(pvals) {
 ##' @return NULL
 ##' @importMethodsFrom AnnotationDbi toTable
 ##' @author Guangchuang Yu \url{https://yulab-smu.top}
-computeIC <- function(ont="DO"){
+computeIC <- function(ont="HDO"){
     if (!exists(".DOSEEnv")) {
         .initial()
     }
-    ont <- match.arg(ont, c("DO", "MPO", "HPO"))
+    ont <- match.arg(ont, c("HDO", "MPO", "HPO"))
     DOSEEnv <- get(".DOSEEnv", envir = .GlobalEnv)
-    if (ont == "DO") {
+    if (ont == "HDO") {
         if (!exists("DO2EG", envir=DOSEEnv)) {
             tryCatch(utils::data(list="DO2EG", package="DOSE"))
             assign("DO2EG", DO2EG, envir = DOSEEnv)
@@ -173,7 +175,7 @@ computeIC <- function(ont="DO"){
         }
         DO2EG <- get("DO2EG", envir = DOSEEnv)
         # Offsprings <- AnnotationDbi::as.list(HDO.db::HDOOFFSPRING)
-        Offsprings <- get_do_offspring()
+        Offsprings <- GOSemSim:::getOffsprings(ont)
     } else if (ont == "MPO") {
         eg.do <- toTable(MPO.db::MPOMPMGI)[, c(2,1)]
         colnames(eg.do) <- c("eg", "doid")
@@ -210,7 +212,7 @@ computeIC <- function(ont="DO"){
 ##' @importMethodsFrom AnnotationDbi exists
 ##' @export
 ##' @author Guangchuang Yu \url{https://yulab-smu.top}
-gene2DO <- function(gene, organism = "hsa", ont = "DO") {
+gene2DO <- function(gene, organism = "hsa", ont = "HDO") {
     gene <- as.character(gene)
     if (organism == "hsa") {
         if(!exists(".DOSEEnv")) .initial()
@@ -223,11 +225,11 @@ gene2DO <- function(gene, organism = "hsa", ont = "DO") {
         }
         EG2DO <- get("EG2DO", envir=.DOSEEnv)
     } else {
-        if (ont == "DO") {
+        if (ont == "HDO") {
             eg.do <- toTable(MPO.db::MPOMGIDO)
             colnames(eg.do) <- c("eg", "doid")
             # MPOTERMs <- names(as.list(HDOANCESTOR))
-            MPOTERMs <- names(get_do_ancestor())             
+            MPOTERMs <- names(GOSemSim:::getAncestors(ont))             
         } else {
             eg.do <- toTable(MPO.db::MPOMPMGI)[, c(2,1)]
             colnames(eg.do) <- c("eg", "doid")
@@ -285,20 +287,18 @@ hpodata <- function(processTCSS = FALSE) {
 
 ##' @importClassesFrom GOSemSim GOSemSimDATA
 dodata <- function(processTCSS = FALSE) {
-    if (!exists(".DOSEEnv")) .initial()
-    .DOSEEnv <- get(".DOSEEnv", envir=.GlobalEnv)
+    .DOSEEnv <- get_dose_env()
     DOIC <- get("DOIC", envir=.DOSEEnv)
     if (processTCSS) {
         IC <- DOIC@IC
-        DOIC@tcssdata <- process_tcss(ont = "DO", IC = IC, cutoff = NULL)
+        DOIC@tcssdata <- process_tcss(ont = "HDO", IC = IC, cutoff = NULL)
     }
     DOIC
 }
 
 build_dodata <- function() {
-    
     DOIC <- new("GOSemSimDATA",
-                  ont = "DO",
+                  ont = "HDO",
                   IC = computeIC())
     save(DOIC, file="DOIC.rda", compress="xz")
 }
@@ -332,8 +332,7 @@ rebuildAnnoData <- function(file) {
     rebuildAnnoData.internal(eg.do)
 }
 
-## @importFrom HDO.db HDOANCESTOR
-## @importFrom HDO.db HDOTERM
+
 ##' @importMethodsFrom AnnotationDbi mget
 rebuildAnnoData.internal <- function(eg.do) {
 
@@ -344,7 +343,7 @@ rebuildAnnoData.internal <- function(eg.do) {
     # doids <- toTable(HDOTERM)
     # HDOTERMs <- doids$do_id
     # HDOTERMs <- names(as.list(HDOANCESTOR))
-    hdoanc <- get_do_ancestor()
+    hdoanc <- GOSemSim:::getAncestors('HDO')
     HDOTERMs <- names(hdoanc)
     idx <- names(DO2EG) %in% HDOTERMs
     DO2EG <- DO2EG[idx]

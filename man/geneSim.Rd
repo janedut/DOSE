@@ -7,7 +7,7 @@
 geneSim(
   geneID1,
   geneID2 = NULL,
-  ont = "DO",
+  ont = "HDO",
   organism = "hsa",
   measure = "Wang",
   combine = "BMA"
@@ -18,7 +18,7 @@ geneSim(
 
 \item{geneID2}{entrez gene vector}
 
-\item{ont}{one of "DO" and "MPO"}
+\item{ont}{one of "HDO" and "MPO"}
 
 \item{organism}{organism}
 

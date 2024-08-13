@@ -41,13 +41,13 @@ enrichDO <- function(gene, ont="DO",
                   ontology = ont)
 }
 
-get_DO_data <- function(ont="DO") {
-    ont <- match.arg(ont, c("DO", "DOLite"))
+get_DO_data <- function(ont="HDO") {
+    ont <- match.arg(ont, c("HDO", "DOLite"))
     if (!exists(".DOSEEnv")) {
         .initial()
     }
     DOSEEnv <- get(".DOSEEnv", envir = .GlobalEnv)
-    if (ont == "DO") {
+    if (ont == "HDO") {
         if (!exists("DO2ALLEG", envir=DOSEEnv)) {
             tryCatch(utils::data(list="DO2ALLEG", package="DOSE"))
             assign("DO2ALLEG", DO2ALLEG, envir = DOSEEnv)
@@ -65,9 +65,10 @@ get_DO_data <- function(ont="DO") {
         PATHID2EXTID <- get("DO2ALLEG", envir = DOSEEnv)
         EXTID2PATHID <- get("EG2ALLDO", envir = DOSEEnv)
         
-        PATH2NAME.df <- toTable(HDOTERM)
+        db <- GOSemSim:::load_onto(ont)
+        PATH2NAME.df <- toTable(db)
         # PATH2NAME.df <- PATH2NAME.df[, c("do_id", "Term")]
-        PATH2NAME.df <- PATH2NAME.df[, c("doid", "term")]
+        # PATH2NAME.df <- PATH2NAME.df[, c("doid", "term")]
         PATH2NAME.df <- unique(PATH2NAME.df)
         PATH2NAME <- PATH2NAME.df[,2]
         names(PATH2NAME) <- PATH2NAME.df[,1]
