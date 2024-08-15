@@ -8,16 +8,7 @@ get_dose_env <- function() {
 .initial <- function() {
     pos <- 1
     envir <- as.environment(pos)
-    assign(".DOSEEnv", new.env(), envir = envir)
-    .DOSEEnv <- get(".DOSEEnv", envir = envir)
-
-
-    tryCatch(utils::data(list="DOIC",
-                         package="DOSE"))
-    DOIC <- get("DOIC")
-    assign("DOIC", DOIC, envir = .DOSEEnv)
-    rm(DOIC, envir = .GlobalEnv)
-    
+    assign(".DOSEEnv", new.env(), envir = envir) 
 }
 
 check_gene_id <- function(geneList, geneSets) {
@@ -130,50 +121,32 @@ gene2DO <- function(gene, organism = "hsa", ont = "HDO") {
 process_tcss <- getFromNamespace("process_tcss", "GOSemSim")
 
 ##' @importClassesFrom GOSemSim GOSemSimDATA
+semdata <- function(processTCSS = FALSE, ont = "HDO") {
+    IC <- new("GOSemSimDATA",
+                ont = ont,
+                IC = computeIC(ont = ont))
+
+    if (processTCSS) {
+        IC <- IC@IC
+        IC@tcssdata <- process_tcss(ont = ont, IC = IC, cutoff = NULL)
+    }
+
+    IC
+}
+
+semdata2 <- memoise::memoise(semdata)
+
 mpodata <- function(processTCSS = FALSE) {
-    if (!exists(".DOSEEnv")) .initial()
-    DOIC <- new("GOSemSimDATA",
-                  ont = "MPO",
-                  IC = computeIC(ont = "MPO"))    
-    if (processTCSS) {
-        IC <- DOIC@IC
-        DOIC@tcssdata <- process_tcss(ont = "MPO", IC = IC, cutoff = NULL)
-    }
-    DOIC
+    semdata2(processTCSS, "MPO")
 }
 
-##' @importClassesFrom GOSemSim GOSemSimDATA
 hpodata <- function(processTCSS = FALSE) {
-    if (!exists(".DOSEEnv")) .initial()
-    DOIC <- new("GOSemSimDATA",
-                  ont = "HPO",
-                  IC = computeIC(ont = "HPO"))    
-    if (processTCSS) {
-        IC <- DOIC@IC
-        DOIC@tcssdata <- process_tcss(ont = "HPO", IC = IC, cutoff = NULL)
-    }
-    DOIC
+    semdata2(processTCSS, "HPO")
 }
 
-
-##' @importClassesFrom GOSemSim GOSemSimDATA
 dodata <- function(processTCSS = FALSE) {
-    .DOSEEnv <- get_dose_env()
-    DOIC <- get("DOIC", envir=.DOSEEnv)
-    if (processTCSS) {
-        IC <- DOIC@IC
-        DOIC@tcssdata <- process_tcss(ont = "HDO", IC = IC, cutoff = NULL)
-    }
-    DOIC
+    semdata2(processTCSS, "HDO")
 }
-
-build_dodata <- function() {
-    DOIC <- new("GOSemSimDATA",
-                  ont = "HDO",
-                  IC = computeIC())
-    save(DOIC, file="DOIC.rda", compress="xz")
-}
-
 
 
 get_ont2gene <- function(ontology, output = "list") {

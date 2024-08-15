@@ -43,10 +43,6 @@ clean:
 	cd ..;\
 	$(RM) -r $(PKGNAME).Rcheck/
 
-updateIC:
-	Rscript -e 'DOSE:::build_dodata()'
-	mv DOIC.rda data/
-	
 gitmaintain:
 	git gc --auto;\
 	git prune -v;\

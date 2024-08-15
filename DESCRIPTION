@@ -33,8 +33,9 @@ Suggests:
     clusterProfiler,
     gson (>= 0.0.5),
     knitr,
-    rmarkdown,
+    memoise,
     org.Hs.eg.db,
+    rmarkdown,
     testthat
 VignetteBuilder: knitr
 ByteCompile: true

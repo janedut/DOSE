@@ -3,7 +3,6 @@
 \docType{data}
 \name{DataSet}
 \alias{DataSet}
-\alias{DOIC}
 \alias{geneList}
 \alias{NCG_EXTID2PATHID}
 \alias{NCG_PATHID2EXTID}
