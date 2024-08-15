@@ -24,8 +24,8 @@ library("yulab.utils")
 [![Project Status: Active - The project has reached a stable, usable state and is being actively developed.](http://www.repostatus.org/badges/latest/active.svg)](http://www.repostatus.org/#active)
 [![platform](http://www.bioconductor.org/shields/availability/devel/DOSE.svg)](https://www.bioconductor.org/packages/devel/bioc/html/DOSE.html#archives)
 [![Build Status](http://www.bioconductor.org/shields/build/devel/bioc/DOSE.svg)](https://bioconductor.org/checkResults/devel/bioc-LATEST/DOSE/)
-`r badge_bioc_download("GOSemSim", "total", "blue")`
-`r badge_bioc_download("GOSemSim", "month", "blue")`
+`r badge_bioc_download("DOSE", "total", "blue")`
+`r badge_bioc_download("DOSE", "month", "blue")`
 
 
 ```{r comment="", echo=FALSE, results='asis'}
