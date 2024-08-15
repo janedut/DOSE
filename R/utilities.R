@@ -12,18 +12,6 @@ get_dose_env <- function() {
     .DOSEEnv <- get(".DOSEEnv", envir = envir)
 
 
-    tryCatch(utils::data(list="mpotbl",
-                         package="DOSE"))
-    mpotbl <- get("mpotbl")
-    assign("mpotbl", mpotbl, envir = .DOSEEnv)
-    rm(mpotbl, envir = .GlobalEnv)
-
-    tryCatch(utils::data(list="hpotbl",
-                         package="DOSE"))
-    hpotbl <- get("hpotbl")
-    assign("hpotbl", hpotbl, envir = .DOSEEnv)
-    rm(hpotbl, envir = .GlobalEnv)
-
     tryCatch(utils::data(list="DOIC",
                          package="DOSE"))
     DOIC <- get("DOIC")
@@ -65,76 +53,6 @@ calculate_qvalue <- function(pvals) {
     }
     return(qvalues)
 }
-
-
-
-
-## to be removed, see GOSemSim::get_rel_df
-## 
-#' @importFrom AnnotationDbi toTable
-prepare_relation_df <- function() {
-    ont <- "HDO"
-    ont_db <- GOSemSim:::load_onto(ont)
-    # gtb <- toTable(HDOTERM)
-    gtb <- toTable(ont_db)
-    gtb <- gtb[,1, drop=FALSE]
-    gtb <- unique(gtb)
-
-    id <- gtb$id
-    parent <- GOSemSim:::getParents(ont)
-    pid <- parent[id]
-    cid <- rep(names(pid), times=sapply(pid, length))
-
-    ptb <- data.frame(id=cid,
-                      relationship = 'other',
-                      parent = unlist(pid),
-                      Ontology = ont,
-                      stringsAsFactors = FALSE)
-
-    dotbl <- merge(gtb, ptb, by="id")
-    
-    save(dotbl, file="dotbl.rda", compress="xz")
-    invisible(dotbl)
-
-
-    # mpotbl
-    gtb <- toTable(MPO.db::MPOTERM)
-    gtb <- gtb[,1, drop=FALSE]
-    gtb <- unique(gtb)
-    id <- gtb$do_id
-    pid <- mget(id, MPO.db::MPOPARENTS)
-    cid <- rep(names(pid), times=sapply(pid, length))
-
-    ptb <- data.frame(id=cid,
-                      relationship = 'other',
-                      parent = unlist(pid),
-                      Ontology = "MPO",
-                      stringsAsFactors = FALSE)
-    
-    mpotbl <- merge(gtb, ptb, by.x="mpid", by.y="id")
-    save(mpotbl, file="mpotbl.rda", compress="xz")
-    invisible(mpotbl)
-
-    # hpotbl
-    gtb <- toTable(HPO.db::HPOTERM)
-    gtb <- gtb[,1, drop=FALSE]
-    gtb <- unique(gtb)
-    id <- gtb$do_id
-    pid <- mget(id, HPO.db::HPOPARENTS)
-    cid <- rep(names(pid), times=sapply(pid, length))
-
-    ptb <- data.frame(id=cid,
-                      relationship = 'other',
-                      parent = unlist(pid),
-                      Ontology = "HPO",
-                      stringsAsFactors = FALSE)
-    
-    hpotbl <- merge(gtb, ptb, by.x="hpoid", by.y="id")
-    save(hpotbl, file="hpotbl.rda", compress="xz")
-    invisible(hpotbl)
-}
-
-
 
 
 calculate_qvalue <- function(pvals) {
