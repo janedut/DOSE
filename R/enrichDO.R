@@ -3,9 +3,9 @@
 ##' Given a vector of genes, this function will return the enrichment DO
 ##' categories with FDR control.
 ##'
-##'
-##' @param ont one of DO and DOLite.
-##' @param organism one of "hsa" and "mmu"
+##' @rdname enrichDO
+##' @param ont one of "HDO", "HPO" or "MPO".
+##' @param organism one of "hsa" and "mm"
 ##' @inheritParams enrichNCG
 ##' @return A \code{enrichResult} instance.
 ##' @export
@@ -41,8 +41,5 @@ enrichDO <- function(gene, ont="HDO",
                   ontology = ont)
 }
 
-get_DO_data <- function() {
-    get_dose_data("HDO")
-}
 
 

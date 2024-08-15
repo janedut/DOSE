@@ -20,9 +20,9 @@ enrichDO(
 \arguments{
 \item{gene}{a vector of entrez gene id}
 
-\item{ont}{one of DO and DOLite.}
+\item{ont}{one of "HDO", "HPO" or "MPO".}
 
-\item{organism}{one of "hsa" and "mmu"}
+\item{organism}{one of "hsa" and "mm"}
 
 \item{pvalueCutoff}{pvalue cutoff}
 

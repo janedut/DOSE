@@ -1,6 +1,8 @@
 # DOSE 3.31.3
 
-+ unify API and removing the usages of MPO.db and HPO.db (2024-08-15, Thu)
++ remove `gseMPO()` and `gseHPO()`, instead using e.g., `gseDO(ont="HPO")` (2024-08-15, Thu)
++ remove `enrichMPO()` and `enrichHPO()`, instead using e.g., `enrichDO(ont="HPO")`
++ unify API and removing the usages of MPO.db and HPO.db 
 + update DO-gene mapping data (2024-08-13, Tue)
 + remove `HDO.db` and use new API in GOSemSim (v>=2.31.1) (2024-08-13, Tue)
 + use `yulab.utils::bib_knownledge()` for CITATION (2024-08-13, Tue)

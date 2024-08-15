@@ -51,15 +51,12 @@ get_anno_data <- function(ontology) {
         annoData <- get_DGN_data()
     } else if (ontology == "snpDisGeNET") {
         annoData <- get_VDGN_data()
-    } else if (ontology == "HDO") {
-        annoData <- get_DO_data()
-    } else if (ontology == "MPO") {
-        annoData <- get_MPO_data()
-    } else if (ontology == "HPO") {
-        annoData <- get_HPO_data()
+    } else if (ontology %in% c("HDO", "MPO", "HPO")) {
+        annoData <- get_dose_data(ontology)
     } else {
         stop("ontology not supported yet...")
     }
+    
     return(annoData)
 }
 
