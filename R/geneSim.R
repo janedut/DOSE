@@ -11,6 +11,9 @@
 ##' @return score matrix
 ##' @importFrom GOSemSim combineScores
 ##' @export
+##' @examples
+##' g <- c("835", "5261","241", "994")
+##' geneSim(g)
 ##' @author Guangchuang Yu \url{https://yulab-smu.top}
 geneSim <- function(geneID1,
                     geneID2=NULL,

@@ -34,10 +34,8 @@ enrichMPO <- function(gene,
 
 
 #' Get MPO data
-#' @param ont one of "DO" and "MPO".
 #' @noRd 
-get_MPO_data <- function(ont = "DO") {
-    if (ont == "DO") ont = "MDO"
-    get_dose_data(ont)
+get_MPO_data <- function() {
+    get_dose_data("MPO")
 }
 

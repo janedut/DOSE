@@ -35,6 +35,10 @@ measuring similarities bewteen two gene vectors.
 \details{
 provide two entrez gene vectors, this function will calculate their similarity.
 }
+\examples{
+g <- c("835", "5261","241", "994")
+geneSim(g)
+}
 \author{
 Guangchuang Yu \url{https://yulab-smu.top}
 }

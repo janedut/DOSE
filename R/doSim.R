@@ -4,7 +4,7 @@
 ##' @title doSim
 ##' @param DOID1 DO term, MPO term or HPO term vector
 ##' @param DOID2 DO term, MPO term or HPO term vector
-##' @param ont one of "HDO" and "MPO"
+##' @param ont one of "HDO", "HPO" and "MPO"
 ##' @param measure one of "Wang", "Resnik", "Rel", "Jiang", "Lin", and "TCSS".
 ##' @return score matrix
 ##' @importFrom GOSemSim termSim
@@ -45,7 +45,7 @@ doseSim <- function(DOID1,
 ##' @return score matrix
 ##' @importFrom GOSemSim termSim
 ##' @export
-##' @author Guangchuang Yu \url{https://guangchuangyu.github.io}
+##' @author Guangchuang Yu \url{https://yulab-smu.top}
 doSim <- function(DOID1,
                    DOID2,
                    measure = "Wang") {

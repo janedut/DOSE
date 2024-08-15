@@ -13,7 +13,7 @@ doseSim(DOID1, DOID2, measure = "Wang", ont = "HDO")
 
 \item{measure}{one of "Wang", "Resnik", "Rel", "Jiang", "Lin", and "TCSS".}
 
-\item{ont}{one of "HDO" and "MPO"}
+\item{ont}{one of "HDO", "HPO" and "MPO"}
 }
 \value{
 score matrix

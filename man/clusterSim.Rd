@@ -18,7 +18,7 @@ clusterSim(
 
 \item{cluster2}{another vector of gene IDs}
 
-\item{ont}{one of "HDO" and "MPO"}
+\item{ont}{one of "HDO", "HPO" and "MPO"}
 
 \item{organism}{organism}
 
@@ -36,11 +36,11 @@ semantic similarity between two gene clusters
 given two gene clusters, this function calculates semantic similarity between them.
 }
 \examples{
-
+\dontrun{
 cluster1 <- c("835", "5261","241", "994")
 cluster2 <- c("307", "308", "317", "321", "506", "540", "378", "388", "396")
 clusterSim(cluster1, cluster2)
-
+}
 }
 \author{
 Yu Guangchuang

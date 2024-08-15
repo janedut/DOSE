@@ -74,37 +74,14 @@ calculate_qvalue <- function(pvals) {
 ##'
 ##'
 ##' @title compute information content
-##' @param ont one of "DO" and "MPO"
+##' @param ont one of "DO", "HPO" and "MPO"
 ##' @return NULL
 ##' @importMethodsFrom AnnotationDbi toTable
 ##' @author Guangchuang Yu \url{https://yulab-smu.top}
 computeIC <- function(ont="HDO"){
-    if (!exists(".DOSEEnv")) {
-        .initial()
-    }
-    ont <- match.arg(ont, c("HDO", "MPO", "HPO"))
-    DOSEEnv <- get(".DOSEEnv", envir = .GlobalEnv)
-    if (ont == "HDO") {
-        if (!exists("DO2EG", envir=DOSEEnv)) {
-            tryCatch(utils::data(list="DO2EG", package="DOSE"))
-            assign("DO2EG", DO2EG, envir = DOSEEnv)
-            DO2EG <- get("DO2EG")
-            rm(DO2EG, envir = .GlobalEnv)
-        }
-        DO2EG <- get("DO2EG", envir = DOSEEnv)
-        # Offsprings <- AnnotationDbi::as.list(HDO.db::HDOOFFSPRING)
-        Offsprings <- GOSemSim:::getOffsprings(ont)
-    } else if (ont == "MPO") {
-        eg.do <- toTable(MPO.db::MPOMPMGI)[, c(2,1)]
-        colnames(eg.do) <- c("eg", "doid")
-        DO2EG <- with(eg.do, split(as.character(eg), as.character(doid)))
-        Offsprings <- AnnotationDbi::as.list(MPO.db::MPOOFFSPRING)
-    } else if (ont == "HPO") {
-        eg.do <- toTable(HPO.db::HPOGENE)[, c(2,1)]
-        colnames(eg.do) <- c("eg", "doid")
-        DO2EG <- with(eg.do, split(as.character(eg), as.character(doid)))
-        Offsprings <- AnnotationDbi::as.list(HPO.db::HPOOFFSPRING)
-    }
+    DO2EG <- get_ont2gene(ont)
+    Offsprings <- GOSemSim:::getOffsprings(ont)
+    
     docount <- unlist(lapply(DO2EG, length))
     doids <- names(docount) 
     
@@ -132,33 +109,8 @@ computeIC <- function(ont="HDO"){
 ##' @author Guangchuang Yu \url{https://yulab-smu.top}
 gene2DO <- function(gene, organism = "hsa", ont = "HDO") {
     gene <- as.character(gene)
-    if (organism == "hsa") {
-        if(!exists(".DOSEEnv")) .initial()
-        .DOSEEnv <- get(".DOSEEnv", envir=.GlobalEnv)
-        if (!exists("EG2DO", envir = .DOSEEnv)) {
-            tryCatch(utils::data(list="EG2DO", package="DOSE"))
-            EG2DO <- get("EG2DO")
-            assign("EG2DO", EG2DO, envir=.DOSEEnv)
-            rm(EG2DO, envir=.GlobalEnv)
-        }
-        EG2DO <- get("EG2DO", envir=.DOSEEnv)
-    } else {
-        if (ont == "HDO") {
-            eg.do <- toTable(MPO.db::MPOMGIDO)
-            colnames(eg.do) <- c("eg", "doid")
-            # MPOTERMs <- names(as.list(HDOANCESTOR))
-            MPOTERMs <- names(GOSemSim:::getAncestors(ont))             
-        } else {
-            eg.do <- toTable(MPO.db::MPOMPMGI)[, c(2,1)]
-            colnames(eg.do) <- c("eg", "doid")
-            MPOTERMs <- names(as.list(MPO.db::MPOANCESTOR))
-        }
-        EG2DO <- with(eg.do, split(as.character(doid), as.character(eg)))
-        EG2DO <- lapply(EG2DO, function(i) unique(i[ i %in% MPOTERMs ]))
-        i <- unlist(lapply(EG2DO, function(i) length(i) != 0))
-        EG2DO <- EG2DO[i]   
-    
-    }
+
+    EG2DO <- get_gene2ont(ont)
 
     DO <- EG2DO[[gene]]
     DO <- unlist(DO)
@@ -176,6 +128,7 @@ gene2DO <- function(gene, organism = "hsa", ont = "HDO") {
 }
 
 process_tcss <- getFromNamespace("process_tcss", "GOSemSim")
+
 ##' @importClassesFrom GOSemSim GOSemSimDATA
 mpodata <- function(processTCSS = FALSE) {
     if (!exists(".DOSEEnv")) .initial()
@@ -222,87 +175,40 @@ build_dodata <- function() {
 }
 
 
-##' rebuilding entrez and DO mapping datasets
-##'
-##'
-##' @title rebuiding annotation data
-##' @param file do_rif.human.txt
-##' @return NULL
-##' @importFrom utils read.delim
-##' @author Guangchuang Yu \url{https://yulab-smu.top}
-rebuildAnnoData <- function(file) {
-    ##
-    ## do_rif.human.txt was downloaded from
-    ## http://projects.bioinformatics.northwestern.edu/do_rif/
-    ##
 
-    ## do.rif <- read.delim2(file, sep="\t", stringsAsFactors=F, header=F)
-    ## eg.do <- do.rif[,c(1,5)]
+get_ont2gene <- function(ontology, output = "list") {
+    gene2ont <- get_gene2ont(ontology, output = "data.frame")
+    if (output == "data.frame") {
+        return(gene2ont[, 2:1])
+    }
 
-    ## new file
-    ## IDMappings.txt from
-    ## http://doa.nubic.northwestern.edu/pages/download.php
-    domapping <- read.delim(file, stringsAsFactors=F)
-    eg.do <- domapping[,c(2,1)]
-    colnames(eg.do) <- c("eg", "doid")
-    eg.do$doid <- paste("DOID:", eg.do$doid, sep="")
-
-    rebuildAnnoData.internal(eg.do)
+    split(as.character(gene2ont[,1]), as.character(gene2ont[,2]))
 }
 
+get_gene2ont <- function(ontology, output = "list") {
+    ont2gene <- GOSemSim:::get_onto_data(ontology, table = "ont2gene", output = 'data.frame')
+    anc <- GOSemSim:::getAncestors(ontology)
+    idx <- ont2gene[,1] %in% names(anc)
+    ont2gene <- unique(ont2gene[idx, ])
 
-##' @importMethodsFrom AnnotationDbi mget
-rebuildAnnoData.internal <- function(eg.do) {
+    if (output == "data.frame") {
+        return(ont2gene[, 2:1])
+    }
 
-    eg <- doid <- NULL # to satisfy codetools
+    split(as.character(ont2gene[,1]), as.character(ont2gene[,2]))
+}
 
-    DO2EG <- with(eg.do, split(as.character(eg), as.character(doid)))
-    ## DO2EG <- dlply(eg.do, .(doid), .fun=function(i) i$eg)
-    # doids <- toTable(HDOTERM)
-    # HDOTERMs <- doids$do_id
-    # HDOTERMs <- names(as.list(HDOANCESTOR))
-    hdoanc <- GOSemSim:::getAncestors('HDO')
-    HDOTERMs <- names(hdoanc)
-    idx <- names(DO2EG) %in% HDOTERMs
-    DO2EG <- DO2EG[idx]
-    DO2EG <- lapply(DO2EG, function(i) unique(i))
-    save(DO2EG, file="DO2EG.rda", compress="xz")
+get_gene2allont <- function(ontology, output = "list") {
+    GOSemSim:::get_onto_data(ontology, table = "gene2allont", output = output)
+}
 
-    EG2DO <- with(eg.do, split(as.character(doid), as.character(eg)))
-    ## EG2DO <- dlply(eg.do, .(eg), .fun=function(i) i$doid)
-    EG2DO <- lapply(EG2DO, function(i) unique(i[ i %in% HDOTERMs ]))
+get_ont2allgene <- function(ontology, output = "list") {
+    gene2allont <- GOSemSim:::get_onto_data(ontology, table = "gene2allont", output = "data.frame")
+    if (output == "data.frame") {
+        return(gene2allont[, 2:1])
+    }
 
-    i <- unlist(lapply(EG2DO, function(i) length(i) != 0))
-    EG2DO <- EG2DO[i]
-    save(EG2DO, file="EG2DO.rda", compress="xz")
-
-    EG2ALLDO <- lapply(EG2DO,
-                       function(i) {
-                           # ans <- unlist(mget(i, HDOANCESTOR))
-                           ans <- unlist(hdoanc[i])
-                           ans <- ans[ !is.na(ans) ]
-                           ans <- c(i, ans)
-                           ans <- unique(ans)
-                           return(ans)
-                       })
-    save(EG2ALLDO, file="EG2ALLDO.rda", compress="xz")
-
-    len <- lapply(EG2ALLDO,length)
-    EG2ALLDO.df <- data.frame(EG=rep(names(EG2ALLDO), times=len),
-                              DO=unlist(EG2ALLDO))
-    DO <- NULL ## satisfy code tools
-    ## DO2ALLEG <- dlply(EG2ALLDO.df, .(DO), function(i) as.character(i$EG))
-    DO2ALLEG <- with(EG2ALLDO.df, split(as.character(EG), as.character(DO)))
-    DO2ALLEG <- lapply(DO2ALLEG, unique)
-    save(DO2ALLEG, file="DO2ALLEG.rda", compress="xz")
-
-
-    ## tryCatch(utils::data(list="DOSEEnv", package="DOSE"))
-    ## assign("DO2ALLEG", DO2ALLEG, envir=.DOSEEnv)
-    ## assign("EG2ALLDO", EG2ALLDO, envir=.DOSEEnv)
-    ## assign("EG2DO", EG2DO, envir=.DOSEEnv)
-    ## assign("DO2EG", DO2EG, envir=.DOSEEnv)
-    ## save(.DOSEEnv, file="DOSEEnv.rda", compress="xz")
+    split(as.character(gene2allont[,1]), as.character(gene2allont[,2]))
 }
 
 ## ##' get all entrezgene ID of a specific organism

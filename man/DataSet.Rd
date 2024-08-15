@@ -3,15 +3,7 @@
 \docType{data}
 \name{DataSet}
 \alias{DataSet}
-\alias{EG2DO}
-\alias{DO2EG}
-\alias{EG2ALLDO}
-\alias{DO2ALLEG}
 \alias{DOIC}
-\alias{mpotbl}
-\alias{EG2DOLite}
-\alias{DOLite2EG}
-\alias{DOLiteTerm}
 \alias{geneList}
 \alias{NCG_EXTID2PATHID}
 \alias{NCG_PATHID2EXTID}

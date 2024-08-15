@@ -6,7 +6,7 @@
 \usage{
 enrichDO(
   gene,
-  ont = "DO",
+  ont = "HDO",
   organism = "hsa",
   pvalueCutoff = 0.05,
   pAdjustMethod = "BH",
@@ -57,6 +57,6 @@ data(geneList)
 \code{\link{enrichResult-class}}
 }
 \author{
-Guangchuang Yu \url{http://guangchuangyu.github.io}
+Guangchuang Yu \url{https://yulab-smu.top}
 }
 \keyword{manip}
