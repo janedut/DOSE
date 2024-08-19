@@ -22,7 +22,7 @@ enrichDO(
 
 \item{ont}{one of "HDO", "HPO" or "MPO".}
 
-\item{organism}{one of "hsa" and "mm"}
+\item{organism}{one of "hsa" and "mmu"}
 
 \item{pvalueCutoff}{pvalue cutoff}
 

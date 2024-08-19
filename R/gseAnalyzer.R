@@ -46,7 +46,7 @@ gseDisease <- function(geneList,
 ##' perform gsea analysis
 ##' @param geneList order ranked geneList
 ##' @param ont one of "HDO", "HPO" or "MPO"
-##' @param organism one of "hsa" and "mm"
+##' @param organism one of "hsa" and "mmu"
 ##' @param exponent weight of each step
 ##' @param minGSSize minimal size of each geneSet for analyzing
 ##' @param maxGSSize maximal size of each geneSet for analyzing

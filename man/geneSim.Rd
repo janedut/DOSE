@@ -20,7 +20,7 @@ geneSim(
 
 \item{ont}{one of "HDO" and "MPO"}
 
-\item{organism}{organism}
+\item{organism}{one of "hsa" and "mmu"}
 
 \item{measure}{one of "Wang", "Resnik", "Rel", "Jiang", and "Lin".}
 

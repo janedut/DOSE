@@ -24,7 +24,7 @@ gseDO(
 
 \item{ont}{one of "HDO", "HPO" or "MPO"}
 
-\item{organism}{one of "hsa" and "mm"}
+\item{organism}{one of "hsa" and "mmu"}
 
 \item{exponent}{weight of each step}
 

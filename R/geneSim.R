@@ -4,7 +4,7 @@
 ##' @title geneSim
 ##' @param geneID1 entrez gene vector
 ##' @param geneID2 entrez gene vector
-##' @param organism organism
+##' @param organism one of "hsa" and "mmu"
 ##' @param ont one of "HDO" and "MPO"
 ##' @param measure one of "Wang", "Resnik", "Rel", "Jiang", and "Lin".
 ##' @param combine One of "max", "avg", "rcmax", "BMA" methods, for combining semantic similarity scores of multiple DO terms associated with gene/protein.

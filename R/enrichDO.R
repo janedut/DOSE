@@ -5,7 +5,7 @@
 ##'
 ##' @rdname enrichDO
 ##' @param ont one of "HDO", "HPO" or "MPO".
-##' @param organism one of "hsa" and "mm"
+##' @param organism one of "hsa" and "mmu"
 ##' @inheritParams enrichNCG
 ##' @return A \code{enrichResult} instance.
 ##' @export

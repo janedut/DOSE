@@ -20,7 +20,7 @@ clusterSim(
 
 \item{ont}{one of "HDO", "HPO" and "MPO"}
 
-\item{organism}{organism}
+\item{organism}{one of "hsa" and "mmu"}
 
 \item{measure}{One of "Resnik", "Lin", "Rel", "Jiang" and "Wang" methods.}
 

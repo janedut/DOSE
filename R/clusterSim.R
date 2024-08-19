@@ -5,7 +5,7 @@
 ##' @title clusterSim
 ##' @param cluster1 a vector of gene IDs
 ##' @param cluster2 another vector of gene IDs
-##' @param organism organism
+##' @param organism one of "hsa" and "mmu"
 ##' @param ont one of "HDO", "HPO" and "MPO"
 ##' @param measure One of "Resnik", "Lin", "Rel", "Jiang" and "Wang" methods.
 ##' @param combine One of "max", "avg", "rcmax", "BMA" methods, for combining
