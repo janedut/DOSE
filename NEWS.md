@@ -5,7 +5,6 @@
 + unify API and removing the usages of MPO.db and HPO.db 
 + update DO-gene mapping data (2024-08-13, Tue)
 + remove `HDO.db` and use new API in GOSemSim (v>=2.31.1) (2024-08-13, Tue)
-+ use `yulab.utils::bib_knownledge()` for CITATION (2024-08-13, Tue)
 + use `yulab.utils::yulab_msg()` for startup message (2024-07-26, Fri)
 
 # DOSE 3.31.2
