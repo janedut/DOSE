@@ -2,9 +2,12 @@
 % Please edit documentation in R/doSim.R
 \name{doseSim}
 \alias{doseSim}
-\title{doSim}
+\alias{doSim}
+\title{doseSim}
 \usage{
 doseSim(DOID1, DOID2, measure = "Wang", ont = "HDO")
+
+doSim(DOID1, DOID2, measure = "Wang", ont = "HDO")
 }
 \arguments{
 \item{DOID1}{DO term, MPO term or HPO term vector}
@@ -23,4 +26,7 @@ measuring similarities between two DO term vectors.
 }
 \details{
 provide two term vectors, this function will calculate their similarities.
+}
+\author{
+Guangchuang Yu \url{https://yulab-smu.top}
 }

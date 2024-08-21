@@ -136,18 +136,6 @@ semdata <- function(processTCSS = FALSE, ont = "HDO") {
 
 semdata2 <- memoise::memoise(semdata)
 
-mpodata <- function(processTCSS = FALSE) {
-    semdata2(processTCSS, "MPO")
-}
-
-hpodata <- function(processTCSS = FALSE) {
-    semdata2(processTCSS, "HPO")
-}
-
-dodata <- function(processTCSS = FALSE) {
-    semdata2(processTCSS, "HDO")
-}
-
 
 get_ont2gene <- function(ontology, output = "list") {
     gene2ont <- get_gene2ont(ontology, output = "data.frame")

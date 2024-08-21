@@ -1,3 +1,7 @@
+# DOSE 3.31.4
+
++ remove `mpoSim()` and `hopSim()` (2024-08-21, Wed)
+
 # DOSE 3.31.3
 
 + remove `gseMPO()` and `gseHPO()`, instead using e.g., `gseDO(ont="HPO")` (2024-08-15, Thu)
