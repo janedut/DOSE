@@ -1,3 +1,7 @@
+# DOSE 3.31.4.001
+
++ return NULL in GSEA if not genes can be mapped (2024-08-26, Mon, ReactomePA#43)
+
 # DOSE 3.31.4
 
 + remove `mpoSim()` and `hopSim()` (2024-08-21, Wed)
