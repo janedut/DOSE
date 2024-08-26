@@ -1,4 +1,4 @@
-# DOSE 3.31.4.001
+# DOSE 3.99.1
 
 + return NULL in GSEA if not genes can be mapped (2024-08-26, Mon, ReactomePA#43)
 
