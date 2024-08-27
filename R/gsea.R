@@ -12,11 +12,13 @@ GSEA_fgsea <- function(geneList,
                        USER_DATA,
                        ...) {
 
-    if(verbose)
+    if(verbose) {
+        message("using 'fgsea' for GSEA analysis, please cite Korotkevich et al (2019).\n")
         message("preparing geneSet collections...")
+    }
 
     geneSets <- getGeneSet(USER_DATA)
-    check_gene_id(geneList, geneSets)
+    if (!check_gene_id(geneList, geneSets)) return(NULL)
 
     if(verbose)
         message("GSEA analysis...")
@@ -223,7 +225,7 @@ GSEA_DOSE <- function(geneList,
     if(verbose)
         message("preparing geneSet collections...")
     geneSets <- getGeneSet(USER_DATA)
-    check_gene_id(geneList, geneSets)
+    if (!check_gene_id(geneList, geneSets)) return(NULL)
 
 
     selected.gs <- geneSet_filter(geneSets, geneList, minGSSize, maxGSSize)

@@ -1,3 +1,33 @@
+# DOSE 3.99.1
+
++ return NULL in GSEA if not genes can be mapped (2024-08-26, Mon, ReactomePA#43)
+
+# DOSE 3.31.4
+
++ remove `mpoSim()` and `hopSim()` (2024-08-21, Wed)
+
+# DOSE 3.31.3
+
++ remove `gseMPO()` and `gseHPO()`, instead using e.g., `gseDO(ont="HPO")` (2024-08-15, Thu)
++ remove `enrichMPO()` and `enrichHPO()`, instead using e.g., `enrichDO(ont="HPO")`
++ unify API and removing the usages of MPO.db and HPO.db 
++ update DO-gene mapping data (2024-08-13, Tue)
++ remove `HDO.db` and use new API in GOSemSim (v>=2.31.1) (2024-08-13, Tue)
++ use `yulab.utils::yulab_msg()` for startup message (2024-07-26, Fri)
+
+# DOSE 3.31.2
+
++ add `FoldEnrichment`, `RichFactor` and `zScore` in ORA result (2024-06-13, Thu)
+
+# DOSE 3.31.1
+
++ fixed bug in `options(enrichment_force_universe=TRUE)` (2024-05-16, Thu)
+  - <https://github.com/YuLab-SMU/clusterProfiler/issues/283#issuecomment-2077869230>
+
+# DOSE 3.30.0
+
++ Bioconductor RELEASE_3_19 (2024-05-15, Wed)
+
 # DOSE 3.29.2
 
 + fix bugs in `get_ont_info()` and `get_dose_data()`: wrong object name and wrong data type (2023-11-30, Thu)

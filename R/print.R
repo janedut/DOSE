@@ -29,22 +29,10 @@ setMethod("show", signature(object="gseaResult"),
               cat(paste0("#...", nrow(object@result)), "enriched terms found\n")
               str(object@result)
               cat("#...Citation\n")
-              if (object@setType == "DO" || object@setType == "DOLite" || object@setType == "NCG") {
-                  citation_msg <- paste("  Guangchuang Yu, Li-Gen Wang, Guang-Rong Yan, Qing-Yu He. DOSE: an",
-                                    "  R/Bioconductor package for Disease Ontology Semantic and Enrichment",
-                                    "  analysis. Bioinformatics 2015, 31(4):608-609", sep="\n", collapse="\n")
-              } else if (object@setType == "Reactome") {
-                  citation_msg <- paste("  Guangchuang Yu, Qing-Yu He. ReactomePA: an R/Bioconductor package for",
-                                        "  reactome pathway analysis and visualization. Molecular BioSystems",
-                                        "  2016, 12(2):477-479", sep="\n", collapse="\n")
-              } else {
-                  citation_msg <- paste(" T Wu, E Hu, S Xu, M Chen, P Guo, Z Dai, T Feng, L Zhou, W Tang, L Zhan, X Fu, S Liu, X Bo, and G Yu.", 
-                                        " clusterProfiler 4.0: A universal enrichment tool for interpreting omics data.", 
-                                        " The Innovation. 2021, 2(3):100141", sep="\n", collapse="\n")
-              }
-              cat(citation_msg, "\n\n")
+              print_citation_msg(object@setType)
           }
-          )
+)
+
 
 ##' show method for \code{enrichResult} instance
 ##'
@@ -61,7 +49,8 @@ setMethod("show", signature(object="gseaResult"),
 ##' @usage show(object)
 ##' @author Guangchuang Yu \url{https://yulab-smu.top}
 setMethod("show", signature(object="enrichResult"),
-          function (object){
+        function (object){
+              
               cat("#\n# over-representation test\n#\n")
               cat("#...@organism", "\t", object@organism, "\n")
               cat("#...@ontology", "\t", object@ontology, "\n")
@@ -78,23 +67,23 @@ setMethod("show", signature(object="enrichResult"),
               cat(paste0("#...", n), "enriched terms found\n")
               if (n > 0) str(object@result)
               cat("#...Citation\n")
-              if (object@ontology == "DO" || object@ontology == "DOLite" || object@ontology == "NCG") {
-                  citation_msg <- paste("  Guangchuang Yu, Li-Gen Wang, Guang-Rong Yan, Qing-Yu He. DOSE: an",
-                                    "  R/Bioconductor package for Disease Ontology Semantic and Enrichment",
-                                    "  analysis. Bioinformatics 2015, 31(4):608-609", sep="\n", collapse="\n")
-              } else if (object@ontology == "Reactome") {
-                  citation_msg <- paste("  Guangchuang Yu, Qing-Yu He. ReactomePA: an R/Bioconductor package for",
-                                        "  reactome pathway analysis and visualization. Molecular BioSystems",
-                                        "  2016, 12(2):477-479", sep="\n", collapse="\n")
-              } else if (object@ontology == "MeSH") {
-                  citation_msg <- paste(" Guangchuang Yu.",
-                             " Using meshes for MeSH term enrichment and semantic analyses.",
-                             " Bioinformatics 2018, 34(21):3766-3767", sep="\n", collapse="\n")
-                
-              } else {
-                  citation_msg <- paste(" T Wu, E Hu, S Xu, M Chen, P Guo, Z Dai, T Feng, L Zhou, W Tang, L Zhan, X Fu, S Liu, X Bo, and G Yu.", 
-                                        " clusterProfiler 4.0: A universal enrichment tool for interpreting omics data.", 
-                                        " The Innovation. 2021, 2(3):100141", sep="\n", collapse="\n")
-              }
-              cat(citation_msg, "\n\n")
-          })
+              print_citation_msg(object@ontology)
+        }
+)
+
+
+print_citation_msg <- function(ontology) {
+    refs <- yulab.utils:::ref_knownledge()
+
+    if (ontology == "HDO" || ontology == "NCG") {
+        citation_msg <- refs["DOSE"]
+    } else if (ontology == "Reactome") {
+        citation_msg <- refs["ReactomePA"]
+    } else if (ontology == "MeSH") {
+        citation_msg <- refs["meshes"]
+    } else {
+        citation_msg <- refs["clusterProfiler_NP"]
+    }
+    cat(citation_msg, "\n\n")
+}
+

@@ -1,7 +1,7 @@
 PKGNAME := $(shell sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION)
 PKGVERS := $(shell sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)
 PKGSRC  := $(shell basename `pwd`)
-BIOCVER := RELEASE_3_18
+BIOCVER := RELEASE_3_19
 
 all: rd check clean
 
@@ -14,9 +14,10 @@ readme:
 	Rscript -e 'rmarkdown::render("README.Rmd", encoding="UTF-8")'
 
 build:
-	cd ..;\
-	R CMD build $(PKGSRC)
-
+	#cd ..;\
+	#R CMD build $(PKGSRC)
+	Rscript -e 'devtools::build()'
+	
 build2:
 	cd ..;\
 	R CMD build --no-build-vignettes $(PKGSRC)
@@ -41,7 +42,6 @@ bioccheck:
 clean:
 	cd ..;\
 	$(RM) -r $(PKGNAME).Rcheck/
-
 
 gitmaintain:
 	git gc --auto;\

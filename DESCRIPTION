@@ -1,12 +1,11 @@
 Package: DOSE
 Type: Package
 Title: Disease Ontology Semantic and Enrichment analysis
-Version: 3.29.2
+Version: 3.99.1
 Authors@R: c( person(given = "Guangchuang", family = "Yu",        email = "guangchuangyu@gmail.com",   role = c("aut", "cre")),
               person(given = "Li-Gen",      family = "Wang",      email = "reeganwang020@gmail.com",   role = "ctb"),
               person(given = "Vladislav",   family = "Petyuk",    email = "petyuk@gmail.com",          role = "ctb"),
-              person(given = "Giovanni",    family = "Dall'Olio", email = "giovanni.dallolio@upf.edu", role = "ctb"),
-              person(given = "Erqiang",     family = "Hu",        email = "13766876214@163.com",       role = "ctb"))
+              person(given = "Giovanni",    family = "Dall'Olio", email = "giovanni.dallolio@upf.edu", role = "ctb"))
 Maintainer: Guangchuang Yu <guangchuangyu@gmail.com>
 Description: This package implements five methods proposed by
     Resnik, Schlicker, Jiang, Lin and Wang respectively
@@ -19,34 +18,32 @@ Depends:
     R (>= 3.5.0)
 Imports:
     AnnotationDbi,
-    HDO.db,
     BiocParallel,
     fgsea,
     ggplot2,
-    GOSemSim (>= 2.27.1),
+    GOSemSim (>= 2.31.2),
     methods,
     qvalue,
     reshape2,
     stats,
     utils,
-    yulab.utils
+    yulab.utils (>= 0.1.6)
 Suggests:
     prettydoc,
     clusterProfiler,
     gson (>= 0.0.5),
     knitr,
-    rmarkdown,
+    memoise,
     org.Hs.eg.db,
-    HPO.db,
-    MPO.db,
+    rmarkdown,
     testthat
 VignetteBuilder: knitr
 ByteCompile: true
 License: Artistic-2.0
 Encoding: UTF-8
-URL: https://yulab-smu.top/biomedical-knowledge-mining-book/
+URL: https://yulab-smu.top/contribution-knowledge-mining/
 BugReports: https://github.com/GuangchuangYu/DOSE/issues
 Packaged: 2011-12-28 08:16:14 UTC; root
 biocViews: Annotation, Visualization, MultipleComparison, GeneSetEnrichment,
     Pathways, Software
-RoxygenNote: 7.3.0
+RoxygenNote: 7.3.2

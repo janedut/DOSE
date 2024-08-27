@@ -5,7 +5,8 @@
 ##' @param gene a vector of entrez gene id.
 ##' @param pvalueCutoff Cutoff value of pvalue.
 ##' @param pAdjustMethod one of "holm", "hochberg", "hommel", "bonferroni", "BH", "BY", "fdr", "none"
-##' @param universe background genes
+##' @param universe background genes, default is the intersection of the 'universe' with genes that have annotations. 
+##' Users can set `options(enrichment_force_universe = TRUE)` to force the 'universe' untouched.
 ##' @param minGSSize minimal size of genes annotated by Ontology term for testing.
 ##' @param maxGSSize maximal size of each geneSet for analyzing
 ##' @param qvalueCutoff cutoff of qvalue
@@ -17,7 +18,7 @@
 ##' @importFrom stats phyper
 ##' @importFrom stats p.adjust
 ##' @keywords manip
-##' @author Guangchuang Yu \url{http://guangchuangyu.github.io}
+##' @author Guangchuang Yu \url{https://yulab-smu.top}
 enricher_internal <- function(gene,
                               pvalueCutoff,
                               pAdjustMethod="BH",
@@ -61,7 +62,9 @@ enricher_internal <- function(gene,
     if(!is.null(universe)) {
         if (is.character(universe)) {
             force_universe <- getOption("enrichment_force_universe", FALSE)
-            if (!force_universe) {
+            if (force_universe) {
+                extID <- universe
+            } else {
                 extID <- intersect(extID, universe)
             }
         } else {
@@ -115,17 +118,29 @@ enricher_internal <- function(gene,
                      )
 
     ## gene ratio and background ratio
-    GeneRatio <- apply(data.frame(a=k, b=n), 1, function(x)
-                       paste(x[1], "/", x[2], sep="", collapse="")
-                       )
-    BgRatio <- apply(data.frame(a=M, b=N), 1, function(x)
-                     paste(x[1], "/", x[2], sep="", collapse="")
-                     )
+    #GeneRatio <- apply(data.frame(a=k, b=n), 1, function(x)
+    #                   paste(x[1], "/", x[2], sep="", collapse="")
+    #                   )
+    #BgRatio <- apply(data.frame(a=M, b=N), 1, function(x)
+    #                 paste(x[1], "/", x[2], sep="", collapse="")
+    #                 )
 
+    GeneRatio <- sprintf("%s/%s", k, n)
+    BgRatio <- sprintf("%s/%s", M, N)
+    RichFactor <- k / M
+    FoldEnrichment <- RichFactor * N / n 
 
+    # mu and sigma are the mean and standard deviation of the hypergeometric distribution
+    ## https://en.wikipedia.org/wiki/Hypergeometric_distribution
+    mu <- M * n / N
+    sigma <- mu * (N - n) * (N - M) / N / (N-1)
+    zScore <- (k - mu)/sqrt(sigma)
     Over <- data.frame(ID = as.character(qTermID),
                        GeneRatio = GeneRatio,
                        BgRatio = BgRatio,
+                       RichFactor = RichFactor,
+                       FoldEnrichment = FoldEnrichment,
+                       zScore = zScore, 
                        pvalue = pvalues,
                        stringsAsFactors = FALSE)
 

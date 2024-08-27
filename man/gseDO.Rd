@@ -6,6 +6,7 @@
 \usage{
 gseDO(
   geneList,
+  ont = "HDO",
   organism = "hsa",
   exponent = 1,
   minGSSize = 10,
@@ -20,6 +21,8 @@ gseDO(
 }
 \arguments{
 \item{geneList}{order ranked geneList}
+
+\item{ont}{one of "HDO", "HPO" or "MPO"}
 
 \item{organism}{one of "hsa" and "mmu"}
 
